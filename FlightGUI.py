@@ -18,7 +18,7 @@ def get_connection():
         database=DB_NAME
     )
 
-# Stored procedures for Flight Tracking system
+# Stored procedures 
 procedures = {
     "add_airplane": [
         ("ip_airlineID", "str"),
@@ -75,7 +75,7 @@ procedures = {
     "simulation_cycle": []
 }
 
-# Views for Flight Tracking system
+# Views 
 views = {
     "flights_in_the_air": [],
     "flights_on_the_ground": [],
@@ -147,91 +147,114 @@ null_parameters = {
 class ProcedureRunnerApp:
     def __init__(self, master):
         self.master = master
-        master.title("Flight Tracking Interface")
+        master.title("✈ Flight Tracker Interface")
+        master.geometry('800x600')
+        master.configure(bg='#E0F7FA') 
 
-        tk.Label(master, text="Select Procedure/View:").grid(row=0, column=0, padx=5, pady=5, sticky='e')
+        style = ttk.Style(master)
+        style.theme_use('clam')
+        style.configure('Header.TLabel', font=('Helvetica', 20, 'bold'), background='#0288D1', foreground='white')
+        style.configure('Section.TLabel', font=('Helvetica', 12), background='#E0F7FA')
+        style.configure('Flight.TButton', font=('Helvetica', 10, 'bold'), background='#0288D1', foreground='white')
+        style.map('Flight.TButton', background=[('active', '#0277BD')])
+        style.configure('TCombobox', fieldbackground='white')
+        style.configure('TLabel', background='#E0F7FA')
+        style.configure('Treeview', rowheight=25)
+        style.configure('Treeview.Heading', font=('Helvetica', 10, 'bold'))
+
+        header = tk.Frame(master, bg='#0288D1', height=50)
+        header.pack(fill='x')
+        ttk.Label(header, text='✈ Flight Tracker', style='Header.TLabel').pack(pady=10)
+
+        select_frame = tk.Frame(master, bg='#E0F7FA')
+        select_frame.pack(fill='x', padx=20, pady=(10, 0))
+        ttk.Label(select_frame, text='Select Procedure/View:', style='Section.TLabel').grid(row=0, column=0, sticky='w')
         self.selection = tk.StringVar()
-        self.combo = ttk.Combobox(
-            master,
-            textvariable=self.selection,
-            values=list(procedures.keys()) + list(views.keys()),
-            state='readonly'
-        )
-        self.combo.grid(row=0, column=1, padx=5, pady=5, sticky='w')
-        self.combo.bind("<<ComboboxSelected>>", self.build_params)
+        self.combo = ttk.Combobox(select_frame, textvariable=self.selection,
+                                  values=list(procedures.keys()) + list(views.keys()), state='readonly')
+        self.combo.grid(row=0, column=1, sticky='we', padx=5)
+        self.combo.bind('<<ComboboxSelected>>', self.build_params)
+        select_frame.columnconfigure(1, weight=1)
 
-        self.params_frame = tk.Frame(master)
-        self.params_frame.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky='w')
+        self.params_frame = tk.LabelFrame(master, text='Parameters', bg='#E0F7FA')
+        self.params_frame.pack(fill='x', padx=20, pady=10)
         self.entries = []
 
-        tk.Button(master, text="Run", command=self.run).grid(
-            row=2, column=0, columnspan=2, padx=5, pady=5)
+        ttk.Button(master, text='Run', style='Flight.TButton', command=self.run).pack(pady=5)
+
+        result_frame = tk.Frame(master, bg='#E0F7FA')
+        result_frame.pack(fill='both', expand=True, padx=20, pady=10)
+        self.tree = ttk.Treeview(result_frame, show='headings')
+        self.tree.pack(fill='both', expand=True)
 
     def build_params(self, event):
-        for w in self.params_frame.winfo_children():
-            w.destroy()
+        for child in self.params_frame.winfo_children():
+            child.destroy()
         self.entries.clear()
         key = self.selection.get()
         param_list = procedures.get(key, [])
-        for name, typ in param_list:
-            frm = tk.Frame(self.params_frame)
-            frm.pack(anchor='w', pady=2)
-            tk.Label(frm, text=f"{name} ({typ}):").pack(side='left')
-            ent = tk.Entry(frm, width=50)
-            ent.pack(side='left')
-            self.entries.append((name, typ, ent))
         if not param_list:
-            tk.Label(self.params_frame, text="(No parameters)").pack(anchor='w')
+            ttk.Label(self.params_frame, text='(No parameters)', style='Section.TLabel').pack(anchor='w')
+            return
+        for name, typ in param_list:
+            row = tk.Frame(self.params_frame, bg='#E0F7FA')
+            row.pack(fill='x', pady=2)
+            ttk.Label(row, text=f'{name} ({typ}):', style='Section.TLabel').pack(side='left')
+            ent = tk.Entry(row, width=30)
+            ent.pack(side='left', padx=5)
+            self.entries.append((name, typ, ent))
 
     def run(self):
         key = self.selection.get()
         if not key:
-            messagebox.showerror("Error", "Select an item first.")
+            messagebox.showerror('Error', 'Select an item first.')
             return
         args = []
         for name, typ, ent in self.entries:
-            v = ent.get().strip()
-            if not v and name in null_parameters.get(key):
+            val = ent.get().strip()
+            if not val and name in null_parameters.get(key, []):
                 args.append(None)
                 continue
-            elif not v:
-                messagebox.showerror("Error", f"{name} required.")
+            elif not val:
+                messagebox.showerror('Error', f'{name} required.')
                 return
-            elif typ == 'int':
+            if typ == 'int':
                 try:
-                    v = int(v)
+                    val = int(val)
                 except ValueError:
-                    messagebox.showerror("Error", f"{name} must be int.")
+                    messagebox.showerror('Error', f'{name} must be int.')
                     return
-            args.append(v)
+            args.append(val)
         try:
             conn = get_connection()
             cur = conn.cursor()
             if key in procedures:
-                placeholders = ",".join(["%s"] * len(args))
-                cur.execute(f"CALL {key}({placeholders})", tuple(args))
+                placeholders = ','.join(['%s'] * len(args))
+                cur.execute(f'CALL {key}({placeholders})', tuple(args))
                 conn.commit()
-                messagebox.showinfo("Done", f"Procedure {key} executed.")
+                messagebox.showinfo('Done', f'Procedure {key} executed.')
+                for item in self.tree.get_children():
+                    self.tree.delete(item)
+                self.tree['columns'] = []
             else:
-                cur.execute(f"SELECT * FROM {key}")
+                cur.execute(f'SELECT * FROM {key}')
                 rows = cur.fetchall()
-                cols = [d[0] for d in cur.description]
-                dlg = tk.Toplevel(self.master)
-                dlg.title(key)
-                tv = ttk.Treeview(dlg, columns=cols, show='headings')
+                cols = [desc[0] for desc in cur.description]
+                for item in self.tree.get_children():
+                    self.tree.delete(item)
+                self.tree['columns'] = cols
                 for c in cols:
-                    tv.heading(c, text=c)
-                    tv.column(c, width=100)
+                    self.tree.heading(c, text=c)
+                    self.tree.column(c, stretch=True)
                 for r in rows:
-                    tv.insert('', 'end', values=r)
-                tv.pack(fill='both', expand=True)
-        except mysql.connector.Error as e:
-            messagebox.showerror("DB Error", str(e))
+                    self.tree.insert('', 'end', values=r)
+        except mysql.connector.Error as err:
+            messagebox.showerror('DB Error', str(err))
         finally:
-            cur.close()
-            conn.close()
+            if 'cur' in locals(): cur.close()
+            if 'conn' in locals(): conn.close()
 
 if __name__ == '__main__':
     root = tk.Tk()
-    ProcedureRunnerApp(root)
+    app = ProcedureRunnerApp(root)
     root.mainloop()
