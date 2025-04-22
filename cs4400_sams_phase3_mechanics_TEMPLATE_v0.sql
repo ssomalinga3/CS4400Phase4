@@ -603,15 +603,14 @@ sp_main: begin
 		
         select a.locationID into flight_loc from airplane a join flight f on f.support_tail = a.tail_num where f.flightID = ip_flightID;
         
-        update person p join passenger pass on p.personID = pass.personID join passenger_vacations pv on pv.personID = p.personID 
-        set p.locationID = flight_loc where p.locationID = airport_locID
-        and pv.airportID = airport_arrival_loc;
 
         update passenger p join person pers on p.personID = pers.personID join passenger_vacations pv on p.personID = pv.personID 
         set p.funds = p.funds - flight_cost
-        where pers.locationID = flight_loc and pv.airportID = airport_arrival_loc and p.funds >= flight_cost;
+        where pers.locationID = airport_locID and pv.airportID = airport_arrival_loc and p.funds >= flight_cost;
         
-
+		update person p join passenger pass on p.personID = pass.personID join passenger_vacations pv on pv.personID = p.personID 
+        set p.locationID = flight_loc where p.locationID = airport_locID
+        and pv.airportID = airport_arrival_loc;
 end //
 delimiter ;
 
