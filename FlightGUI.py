@@ -176,7 +176,7 @@ class ProcedureRunnerApp:
         self.combo.bind('<<ComboboxSelected>>', self.build_params)
         select_frame.columnconfigure(1, weight=1)
 
-        self.params_frame = tk.LabelFrame(master, text='Parameters', bg='#E0F7FA')
+        self.params_frame = tk.LabelFrame(master, text='Parameters', bg='#E0F7FA', foreground='black')
         self.params_frame.pack(fill='x', padx=20, pady=10)
         self.entries = []
 
