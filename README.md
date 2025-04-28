@@ -56,6 +56,8 @@
    - Tested portions of the GUI to verify it's functionality for different use cases
    - Helped update and improve the UI components by refining the design and layout to make it more visually appealing
 - Soham
+  - Assisted in the development of the GUI, focusing on improving the user interface
+  - Collaborated on the integration of MySQL with Python, ensuring seamless interaction between the backend and frontend 
 - Rishit
    - Wrote portions of the ReadMe file, explaining the technologies behind the UI as well how to interact with the GUI
    - Tested portions of the GUI to test the functionality
