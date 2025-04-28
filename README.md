@@ -25,15 +25,16 @@
      python FlightGUI.py
      ```
 2. **Interacting with GUI Application**
+   - ![Flight Tracker GUI](images/GUI.png)
    - Now, you can see the GUI where the user can interact with it now.
    - There are two dropdowns.
         - One asks the user to 'Select procedure/view'
    - Once the user has selected that, there is a type-in box that asks the user the paramters for the procedure or view they selected from the first drop down.
   
-3. **Resetting the GUI Application**
+4. **Resetting the GUI Application**
    - Once the user is done using the GUI application, they can..
      1. Close out the application
-     2. Run the commands from step 2 again to reset the databases to the way they were
+     2. Run the commands from Step 2 of Part I again to reset the databases to the way they were
 
 ## III. Technologies/Tools Used 
 
