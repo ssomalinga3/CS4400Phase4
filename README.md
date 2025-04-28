@@ -7,7 +7,11 @@
      ```
      brew install mysql
      ```
-  
+   - Make sure you can run MySQL by running the following command
+     ```
+     brew services start mysql
+     ```
+     
 2. **Create and Initialize the Database**
    - To create and initialize the database, open a terminal window where the files are located
    - Then run the following commands
@@ -16,10 +20,16 @@
       mysql -u root -p < cs4400_sams_phase3_database_v0.sql
       mysql -u root -p flight_tracking < cs4400_sams_phase3_mechanics_TEMPLATE_v0.sql
       ```
+   - Everytime the user runs these commands in the terminal, the terminal will ask the user for a password. The user must enter the password that they use to log into SQL Workbench.
 ## II. Instructions to Run GUI Application
 
 1. **Run the Python File**
    - Make sure that the python file is in the same folder as the other SQL files mentioned above
+   - Before you run python file, you must change a line at the top of the file. There will be a line that says :
+     ```
+     DB_PASSWORD = 'password'
+     ```
+   - Where it says password, the user must replace it with their own password from SQL Workbench.
    - In a terminal window in that folder, run the following command
      ```
      python FlightGUI.py
