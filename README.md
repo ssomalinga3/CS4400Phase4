@@ -24,3 +24,8 @@
      ```
      python FlightGUI.py
      ```
+2. **Interacting with GUI Application
+   - Now, you can see the GUI where the user can interact with it now.
+   - There are two dropdowns.
+        - One asks the user to 'Select procedure/view'
+   - Once the user has selected that, the second drop down asks the user the paramters for the procedure or view they selected from the first drop down.
