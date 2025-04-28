@@ -30,6 +30,7 @@
      DB_PASSWORD = 'password'
      ```
    - Where it says password, the user must replace it with their own password from SQL Workbench.
+   - The user must do this, so when they apply changes in the GUI, those changes will be seen in the database.
    - In a terminal window in that folder, run the following command
      ```
      python FlightGUI.py
