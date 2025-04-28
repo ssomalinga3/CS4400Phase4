@@ -37,12 +37,13 @@
 
 ## III. Technologies/Tools Used 
 
-*MySQL
+**MySQL
   - MySQL serves as the relational datbase for this project. All of the data is held here plus the logic. By logic, I am referring to the stored procedures and views meaning this all runs on the server side. This way when a user interacts with the GUI, that command is then relayed to Python which relays back signals to MySQL to execute those commands from the user whether it be executing procedures or viewing data.
-*Python
+
+**Python
    - Python serves as the middle man between MySQL and Tinker (which will be explained later), connected by ``` mysql.connector ```. Essentially, Python controls the flow of user input into the GUI. It takes all of the user input, data handles, checks for errors, and then transforms the SQL data into Python methods, so now the user can interact with the stored procedures and views without having to write SQL queries. This allows for the backend to be more accessible from the GUI.
 
-*Tkinter
+**Tkinter
    - d
 
 ## IV. Contributions from Group Members
