@@ -27,9 +27,9 @@
 2. **Interacting with GUI Application**
    - ![Flight Tracker GUI](GUI/GUI.png)
    - Now, you can see the GUI where the user can interact with it now.
-   - There are two dropdowns.
+   - There are two user inputs
         - One asks the user to 'Select procedure/view'
-   - Once the user has selected that, there is a type-in box that asks the user the paramters for the procedure or view they selected from the first drop down.
+        - Once the user has selected that, there is a type-in box that asks the user the paramters for the procedure or view they selected from the first drop down.
   
 4. **Resetting the GUI Application**
    - Once the user is done using the GUI application, they can..
