@@ -52,3 +52,5 @@
 - Sanvi
 - Soham
 - Rishit
+   - Wrote portions of the ReadMe file, explaining the technologies behind the UI as well how to interact with the GUI
+   - Tested portions of the GUI to test the functionality
