@@ -25,7 +25,7 @@
      python FlightGUI.py
      ```
 2. **Interacting with GUI Application**
-   - ![Flight Tracker GUI](GUI/GUI.png)
+   - ![Flight Tracker GUI](GUI.png)
    - Now, you can see the GUI where the user can interact with it now.
    - There are two user inputs
         - One asks the user to 'Select procedure/view'
